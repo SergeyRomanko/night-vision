@@ -77,8 +77,8 @@ function border(props, layout, side, ctx) {
     return {x, y, w, h}
 }
 
+//Цена сбоку графигка - следует за курсором
 function panel(props, layout, scale, side, ctx) {
-
     const panHeight = props.config.PANHEIGHT
     let $ = props.cursor.scales[scale.scaleSpecs.id] || 0
     let lbl = $.toFixed(scale.prec)
@@ -92,11 +92,10 @@ function panel(props, layout, scale, side, ctx) {
     ctx.fillStyle = props.colors.textHL
     ctx.textAlign = S ? 'left' : 'right'
     ctx.fillText(lbl, a, y + 15)
-
 }
 
+//Цена сбоку графика - текущая
 function tracker(props, layout, scale, side, ctx, tracker) {
-	/*
     const panHeight = Math.floor(props.config.PANHEIGHT * 0.8)
     const ct = props.config.CANDLE_TIME && props.timeFrame >= Const.MINUTE
     let $ = tracker.value
@@ -117,7 +116,6 @@ function tracker(props, layout, scale, side, ctx, tracker) {
         ctx.textAlign = S ? 'left' : 'right'
         ctx.fillText(rt, a, y + panHeight + 9) // TODO: remove hardcode
     }
-	*/
 }
 
 function roundRect(ctx, x, y, w, h, r, s) {

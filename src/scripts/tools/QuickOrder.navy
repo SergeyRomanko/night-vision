@@ -1,0 +1,115 @@
+// Navy ~ 0.2-lite
+// <ds>Create New Order by clicking on plus button</ds>
+
+[OVERLAY name=QuickOrder, ctx=Canvas, verion=1.0.0]
+
+var isActive = false;
+
+init() {
+
+}
+
+function roundRect(ctx, x, y, w, h, r, s) {
+    if (w < 2 * r) r = w / 2
+    if (h < 2 * r) r = h / 2
+    ctx.beginPath()
+    ctx.moveTo(x+r, y)
+    ctx.arcTo(x+w, y,   x+w, y+h, r*s)
+    ctx.arcTo(x+w, y+h, x,   y+h, r*s)
+    ctx.arcTo(x,   y+h, x,   y,   r*(1-s))
+    ctx.arcTo(x,   y,   x+w, y,   r*(1-s))
+    ctx.closePath()
+    ctx.fill()
+}
+
+draw(ctx) {
+
+	const cursor = $core.cursor;
+	const layout = $core.layout
+
+	//TODO Тут костыль. Идея такая что если курсор не на свечном графике, то ничего не рисуем
+	if(cursor.gridId != 0) return;
+	
+	if(!cursor.visible) return;
+
+	ctx.save()
+	
+	/*
+    ctx.strokeStyle = isActive ? "red" : "green";
+    ctx.beginPath()
+	
+	ctx.moveTo(0, cursor.y  - 0.5)
+    ctx.lineTo(layout.width - 0.5, cursor.y - 0.5)
+
+    ctx.stroke()
+	*/
+	
+	ctx.fillStyle = $core.props.colors.panel
+	
+	const panHeight = $core.props.config.PANHEIGHT
+    var S = 0
+    let panWidth = 45
+    let x = layout.width - panWidth
+    let y = cursor.y - panHeight * 0.5 - 0.5
+    let a = S ? 7 : panWidth - 3
+    let h = panHeight
+    roundRect(ctx, x , y, panWidth, h, 0, 0)
+	//ctx.rect(x, y, panWidth, h);
+	
+	var scale = layout.scales[layout.scaleIndex];
+	let cursorValue = $core.props.cursor.scales[scale.scaleSpecs.id] || 0
+	
+	//TODO тут много потенциальных проблем
+	let vt = $core.meta.valueTrackers[0][0] || [];
+	let data = $core.hub.ovData(0, 0) || [];
+    let last = data[data.length - 1] || [];
+    let tracker2 = vt(last);
+		
+	
+	let percentageText = calculateDifferencePercentage(tracker2.value, cursorValue);
+	
+	ctx.font = $core.props.config.FONT
+    ctx.fillStyle = $core.props.colors.textHL
+    ctx.textAlign = S ? 'left' : 'right'
+    ctx.fillText(percentageText, layout.width - 3, y + panHeight - 7 - 0.5)
+	
+	
+    ctx.restore()
+}
+
+mousedown(event) {
+    //mouseX = $core.mouse.x
+    //$events.emit('update-layout')
+}
+
+mouseup(event) {
+
+}
+
+mousemove(event) {
+	//
+}
+
+keydown(event) {
+    if (event.key === "Control")
+	{
+        isActive = true;
+		$events.emit('update-layout')
+    }
+}
+
+keyup(event) {
+	if (event.key === "Control")
+	{
+        isActive = false;
+		$events.emit('update-layout')
+    }
+}
+
+//legend() => null
+
+function calculateDifferencePercentage(value1, value2) {
+    if (value1 === 0) return "+0.00%"; // Avoid division by zero, treat as 0% with positive sign
+    let difference = ((value2 - value1) / value1) * 100;
+    return (difference >= 0 ? "+" : "") + difference.toFixed(2) + "%"; // Add "+" for positive values
+}

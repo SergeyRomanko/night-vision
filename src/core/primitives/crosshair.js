@@ -45,8 +45,8 @@ export default class Crosshair extends Layer {
         ctx.save()
         ctx.strokeStyle = this.props.colors.cross
         ctx.beginPath()
-        ctx.setLineDash([5])
-
+        ctx.setLineDash([4,6])
+		
         // H
         if (cursor.gridId === this.layout.id) {
             ctx.moveTo(0, cursor.y + HPX)
