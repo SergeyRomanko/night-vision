@@ -96,6 +96,7 @@ function panel(props, layout, scale, side, ctx) {
 }
 
 function tracker(props, layout, scale, side, ctx, tracker) {
+	/*
     const panHeight = Math.floor(props.config.PANHEIGHT * 0.8)
     const ct = props.config.CANDLE_TIME && props.timeFrame >= Const.MINUTE
     let $ = tracker.value
@@ -116,7 +117,7 @@ function tracker(props, layout, scale, side, ctx, tracker) {
         ctx.textAlign = S ? 'left' : 'right'
         ctx.fillText(rt, a, y + panHeight + 9) // TODO: remove hardcode
     }
-
+	*/
 }
 
 function roundRect(ctx, x, y, w, h, r, s) {
