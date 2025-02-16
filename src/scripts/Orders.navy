@@ -2,9 +2,6 @@
 
 [OVERLAY name=Orders, ctx=Canvas, version=1.0.0]
 
-prop('buyColor', {  type: 'color', def: '#08b2c6' })
-prop('sellColor', {  type: 'color', def: '#e42633' })
-
 draw(ctx) {
 
     const data = $core.data
@@ -94,7 +91,6 @@ function drawRoundedRect(ctx, x, y, width, height, radius, fillColor, strokeColo
 }
 
 
-/*
 legend(x) {
 	const data = $core.data
 
@@ -110,11 +106,9 @@ legend(x) {
 	
 	if (side1Count > 0) result.push([side1Count.toString(), $core.props.colors.candleDw]);
 
-	console.log(result);
-
 	return result;
 }
-*/
+
 
 // Helper function to convert a named color to RGBA
 function convertToRGBA(color, alpha) {
@@ -127,13 +121,4 @@ function convertToRGBA(color, alpha) {
         return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
     return color; // Default return if color is not recognized
-}
-
-legend(x)
-{
-	
-	console.log("legend >>> ", $core.props, x);
-	
-	return [["dfjgldkgj", "red"]]
-
 }
