@@ -10,12 +10,17 @@ draw(ctx) {
 
 	ctx.save()
 	
+	ctx.scale(1, 1);
+	
+	ctx.lineWidth = 1;
+	
     for (var item of data)
 	{
 		let widthY = 70;
 		let startX = layout.width - widthY - 10;
-		let y      = layout.value2y(item.Price)
-		let color  = item.Side == 1 
+		let y      = Math.round(layout.value2y(item.Price))
+				
+		let color  = item.Side == "Sell" 
 			? $core.props.colors.candleDw 
 			: $core.props.colors.candleUp;
 		
@@ -24,20 +29,22 @@ draw(ctx) {
 			var shadowY = layout.value2y(item.Shadow);
 			var shadowHeight = Math.abs(y - shadowY);
 			if (shadowHeight > 1)
-			{
-				ctx.fillStyle = convertToRGBA(color, 0.1);
+			{			
+				ctx.fillStyle = convertToRGBA(color, 0.2);
 				
 				ctx.fillRect(0, Math.min(y, shadowY), layout.width, shadowHeight);
 					
-				ctx.strokeStyle = convertToRGBA(color, 0.25);
+				/*
+				ctx.strokeStyle = convertToRGBA(color, 0.5);
 				ctx.beginPath()
 				ctx.moveTo(0, shadowY + 0.5)
 				ctx.lineTo(layout.width + 0.5, shadowY + 0.5)
 				ctx.stroke()
+				*/
 			}
 		}
 		
-		ctx.strokeStyle = color;
+		ctx.strokeStyle = convertToRGBA(color, 0.5);
 		
 		ctx.beginPath()
 		
@@ -50,17 +57,17 @@ draw(ctx) {
 			ctx, 
 			startX, 
 			y - 13 / 2.0,
-			widthY, 13, 3, $core.props.colors.back, ctx.strokeStyle
+			widthY, 13, 4, $core.props.colors.back, ctx.strokeStyle
 		);
 		
 		ctx.font = "10px -apple-system, BlinkMacSystemFont, Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue, sans-serif"
 		ctx.fillStyle = $core.props.colors.textLG
 		ctx.textAlign = 'left'
-		ctx.fillText(item.Quantity, startX + 4, y + 3 )
+		ctx.fillText(item.Quantity, startX + 4, y + 3.5 )
 		
 		ctx.fillStyle = $core.props.colors.text
 		ctx.textAlign = 'right'
-		ctx.fillText(item.Price, startX + widthY - 4, y + 3)
+		ctx.fillText(item.Price, startX + widthY - 4, y + 3.5 )
     }
 	
 	ctx.restore()
@@ -95,8 +102,8 @@ legend(x) {
 	const data = $core.data
 
 	let { side0Count, side1Count } = data.reduce((acc, item) => {
-		if (item.Side === 0) acc.side0Count++;
-		else if (item.Side === 1) acc.side1Count++;
+		if (item.Side === "Buy") acc.side0Count++;
+		else if (item.Side === "Sell") acc.side1Count++;
 		return acc;
 	}, { side0Count: 0, side1Count: 0 });
 	
