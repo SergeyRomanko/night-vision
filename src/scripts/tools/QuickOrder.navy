@@ -166,7 +166,13 @@ mousedown(event) {
 	
 	let overBuyButton = containsPoint(rect, $core.mouse.x, $core.mouse.y);
 	
-	$events.emit('quick-order')
+	if (overBuyButton)
+	{
+		var scale = layout.scales[layout.scaleIndex];
+		let cursorValue = $core.props.cursor.scales[scale.scaleSpecs.id] || 0
+	
+		$events.emit('quick-order', cursorValue)
+	}
 }
 
 mouseup(event) {
