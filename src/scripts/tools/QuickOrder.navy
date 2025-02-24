@@ -184,17 +184,19 @@ mousemove(event) {
 }
 
 keydown(event) {
-    if (event.key === "Control")
+    if (event.key === "Shift")
 	{
         isClickable = true;
+		
 		$events.emit('update-layout')
     }
 }
 
 keyup(event) {
-	if (event.key === "Control")
+	if (event.key === "Shift")
 	{
         isClickable = false;
+		
 		$events.emit('update-layout')
     }
 }
